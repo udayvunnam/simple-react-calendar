@@ -19,8 +19,8 @@ import {
   IMonthRenderProps,
   INoticeType,
   ISelectionRange,
-  IWeekRenderProps,
-  RenderPropsDay
+  RenderPropsDay,
+  RenderPropsWeek
 } from '../@types'
 import {
   getISODate as helperGetISODate,
@@ -32,6 +32,7 @@ import Day from '../RenderPropsComponents/Day'
 import Month from './month'
 import MonthHeader from './month_header'
 import Notice from './notice'
+import Week from '../RenderPropsComponents/Week'
 
 const isValid = function(date: Date) {
   try {
@@ -83,7 +84,7 @@ export type Props = {
   renderDaysOfWeek?: IDaysOfWeekRenderProps
   renderMonth?: IMonthRenderProps
   renderMonthHeader?: IMonthHeaderRenderProps
-  renderWeek?: IWeekRenderProps
+  renderWeek?: RenderPropsWeek
   selected?: IDate | ISelectionRange
   today?: IDate
   weekStartsOn?: number
@@ -108,6 +109,7 @@ export default class Calendar extends Component<Props, State> {
     headerPrevTitle: PREV_MONTH_TITLE,
     mode: 'single',
     renderDay: (props: ComponentProps<typeof Day>) => <Day {...props} />,
+    renderWeek: (props: ComponentProps<typeof Week>) => <Week {...props} />,
     weekStartsOn: 1
   }
 
@@ -355,11 +357,11 @@ export default class Calendar extends Component<Props, State> {
     const { blockClassName, customRender } = this.props
 
     const children = (
-      <Fragment>
+      <>
         {this._renderNotice()}
         {this._renderMonthHeader()}
         {this._renderMonth()}
-      </Fragment>
+      </>
     )
 
     if (customRender) {
